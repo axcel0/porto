@@ -52,7 +52,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: ./porto/${{ steps.detect-package-manager.outputs.manager }}
+          cache: ${{ steps.detect-package-manager.outputs.manager }}
           cache-dependency-path: ./porto/${{ steps.detect-package-manager.outputs.manager }}.lock
       - name: Setup Pages
         uses: actions/configure-pages@v5
