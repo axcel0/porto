@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Providers from "./providers";
+
+export const dynamic = "force-dynamic";
 
 const geistSans = localFont({
 	src: "./fonts/GeistVF.woff",
@@ -14,10 +17,9 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-	title: "Axel | Full-Stack Developer",
-	description:
-		"Portfolio website of Axel - Full-Stack Developer specializing in React, Next.js, and modern web technologies.",
-	keywords: ["developer", "portfolio", "full-stack", "react", "nextjs", "web developer"],
+	title: "POS01 | Frontend",
+	description: "POS01 cashier dashboard built with Next.js",
+	keywords: ["pos", "cashier", "dashboard", "nextjs", "react"],
 };
 
 export default function RootLayout({
@@ -27,7 +29,30 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+			<head>
+				<script
+					dangerouslySetInnerHTML={{
+						__html: `
+							(function() {
+								try {
+									const theme = localStorage.getItem('theme') || 'dark';
+									const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+									if (isDark) {
+										document.documentElement.classList.add('dark');
+										document.documentElement.style.colorScheme = 'dark';
+									} else {
+										document.documentElement.classList.remove('dark');
+										document.documentElement.style.colorScheme = 'light';
+									}
+								} catch (e) {}
+							})();
+						`,
+					}}
+				/>
+			</head>
+			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+				<Providers>{children}</Providers>
+			</body>
 		</html>
 	);
 }
